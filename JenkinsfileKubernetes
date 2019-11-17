@@ -18,14 +18,14 @@ node{
     }
     
     stage('Push Docker Image'){
-        withCredentials([string(credentialsId: 'DOKCER_HUB_PASSWORD', variable: 'DOKCER_HUB_PASSWORD')]) {
-          sh "docker login -u pkw0301 -p ${DOKCER_HUB_PASSWORD}"
+        withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD')]) {
+          sh "docker login -u pkw0301 -p ${DOCKER_HUB_PASSWORD}"
         }
         sh 'docker push pkw0301/spring-boot-mongo'
      }
      
      
-     stage("Deploy To Kuberates Cluster"){
+     stage("Deploy To Kubernetes Cluster"){
         kubernetesDeploy(
          configs: 'springBootMongo.yml', 
          kubeconfigId: 'KUBERNETES_CLUSTER_CONFIG',
@@ -34,7 +34,7 @@ node{
      }
 	 
 	  /**
-      stage("Deploy To Kuberates Cluster"){
+      stage("Deploy To Kubernetes Cluster"){
         sh 'kubectl delete rc spring-controller mongo-controller'
         sh 'kubectl apply -f pringBootMongo.yml'
       } **/
